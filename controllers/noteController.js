@@ -3,7 +3,7 @@ const Model = tbl.note;
 
 exports.post = async (req, res) => {
   let dataNote = {
-    note: req.query.note,
+    note: req.body.note,
   };
 
   try {
@@ -21,6 +21,25 @@ exports.post = async (req, res) => {
 
 exports.get = async (req, res) => {
   Model.findAll()
+    .then((data) => {
+      return res.json({
+        success: true,
+        data: data,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500);
+    });
+};
+
+exports.detail = async (req, res) => {
+  let { id } = req.query;
+  Model.findOne({
+    where: {
+      id: id,
+    }
+  })
     .then((data) => {
       return res.json({
         success: true,
